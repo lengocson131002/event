@@ -5,7 +5,7 @@ services:
     image: mysql:5.7
     container_name: eventdb
     environment:
-      - MYSQL_ROOT_PASSWORD=Aqswde123@llaf
+      - MYSQL_ROOT_PASSWORD=Aqswde123@
       - MYSQL_USER=mysql
       - MYSQL_PASSWORD=Aqswde123@
       - MYSQL_DATABASE=event_management
