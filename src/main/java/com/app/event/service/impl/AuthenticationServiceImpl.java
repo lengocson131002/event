@@ -152,7 +152,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             String email = payload.getEmail();
             Optional<Account> accountOpt = accountRepository.findFirstByEmail(email);
 
-            if (!email.endsWith(STUDENT_DOMAIN) || accountOpt.isEmpty()) {
+//            if (!email.endsWith(STUDENT_DOMAIN) || accountOpt.isEmpty()) {
+//                throw new ApiException(ResponseCode.AUTH_ERROR_NOT_PERMITTED);
+//            }
+
+            if (accountOpt.isEmpty()) {
                 throw new ApiException(ResponseCode.AUTH_ERROR_NOT_PERMITTED);
             }
 
