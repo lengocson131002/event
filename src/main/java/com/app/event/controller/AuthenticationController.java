@@ -1,10 +1,15 @@
 package com.app.event.controller;
 
 import com.app.event.config.OpenApiConfig;
+import com.app.event.dto.account.response.AccountResponse;
 import com.app.event.dto.auth.request.AuthenticationRequest;
 import com.app.event.dto.auth.request.GoogleLoginRequest;
 import com.app.event.dto.auth.response.AuthenticationResponse;
+import com.app.event.entity.Account;
+import com.app.event.enums.ResponseCode;
 import com.app.event.exception.ApiException;
+import com.app.event.mappings.AccountMapper;
+import com.app.event.repository.AccountRepository;
 import com.app.event.service.AuthenticationService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 public class AuthenticationController {
 
     private final AuthenticationService authenticationService;
+    private final AccountMapper mapper;
 
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> login(@Valid @RequestBody AuthenticationRequest request) {
@@ -45,5 +51,13 @@ public class AuthenticationController {
         final String jwt = authHeader.substring(BEARER.length());
         var response = authenticationService.refreshToken(jwt, request);
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/me")
+    @SecurityRequirement(name = OpenApiConfig.BEARER_SCHEME)
+    public ResponseEntity<AccountResponse> getProfile() {
+        Account acc = authenticationService.getCurrentAuthenticatedAccount()
+                .orElseThrow(() -> new ApiException(ResponseCode.UNAUTHORIZED));
+        return ResponseEntity.ok(mapper.toResponse(acc));
     }
 }
