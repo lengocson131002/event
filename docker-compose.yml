@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  db:
+    image: mysql:5.7
+    container_name: eventdb
+    environment:
+      - MYSQL_ROOT_PASSWORD=Aqswde123@llaf
+      - MYSQL_USER=mysql
+      - MYSQL_PASSWORD=Aqswde123@
+      - MYSQL_DATABASE=event_management
+    ports:
+      - "3307:3306"
+    volumes:
+      - event-data:/var/lib/mysql
+    restart: unless-stopped
+    command: [ 'mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci' ]
+
+  app:
+      build:
+        context: .
+        dockerfile: Dockerfile.compose
+      container_name: eventbe
+      depends_on:
+        - db
+      env_file:
+        - dev.env
+      restart: unless-stopped
+      ports:
+        - "8081:8081"
+volumes:
+  event-data:

@@ -1,0 +1,40 @@
+server:
+  port: ${SERVER_PORT:8080}
+  url: ${SERVER_URL:}
+
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+        jdbc:
+          time_zone: UTC
+        dialect: org.hibernate.dialect.MySQLDialect
+
+  datasource:
+    url: jdbc:mysql://${DATASOURCE_HOST:localhost}:${DATASOURCE_PORT:3306}/${DATASOURCE_DATABASE:event_management}
+    username: ${DATASOURCE_USERNAME:mysql}
+    password: ${DATASOURCE_PASSWORD:Aqswde123@}
+
+  jackson:
+    mapper:
+      ACCEPT_CASE_INSENSITIVE_ENUMS: true
+
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+
+aws:
+  bucket: ${AWS_BUCKET_NAME:swp-event}
+  region: ${AWS_BUCKET_REGION:ap-southeast-1}
+  access-key: ${AWS_ACCESS_KEY:AKIAUDA34SKAOAIUJAWL}
+  secret-key: ${AWS_SECRET_KEY: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}
+
+google:
+  client-id: ${GOOGLE_CLIENT_ID:1034795158974-hcdgmlpltgebldbqrvs83npum8qsc0dt.apps.googleusercontent.com}
+  client-secret: ${GOOGLE_CLIENT_SECRET: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}
+  auth-server-url: ${GOOGLE_AUTH_URL:}
