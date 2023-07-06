@@ -53,7 +53,7 @@ public class SemesterController {
     }
 
     @GetMapping()
-    @PreAuthorize("hasRole('EVENT_MANAGER') && hasRole ('ADMIN' )")
+    @PreAuthorize("hasRole('EVENT_MANAGER') || hasRole ('ADMIN' )")
     public ResponseEntity<ListResponse<Semester, SemesterResponse>> getAllSemesters(@ParameterObject GetAllSemestersRequest request) {
         if (StringUtils.isEmpty(request.getSortBy())) {
             request.setSortBy(Semester.Fields.startTime);
