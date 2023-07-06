@@ -1,5 +1,6 @@
 package com.app.event.service.impl;
 
+import com.app.event.dto.account.request.GetAllEventManagersRequest;
 import com.app.event.dto.events.request.CreateEventRequest;
 import com.app.event.dto.events.request.GetAllEventRegistrationRequest;
 import com.app.event.dto.events.request.GetAllEventsRequest;
@@ -251,12 +252,11 @@ public class EventServiceImpl implements EventService {
 
     @Override
     @Transactional
-    public List<Event> getHostEvents() {
+    public List<Event> getUpComingEvents() {
         // get current semester
-        List<Semester> semesters = semesterRepository.findCurrentSemester(OffsetDateTime.now());
-        if (semesters.isEmpty()) {
-            return new ArrayList<>();
-        }
+        GetAllEventManagersRequest request = new GetAllEventManagersRequest();
+
+
         // get all event in current semester
         return null;
     }

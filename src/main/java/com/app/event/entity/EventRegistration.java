@@ -40,6 +40,7 @@ public class EventRegistration extends BaseEntity {
 
     private OffsetDateTime canceledAt;
 
+    @Column(length = 1000)
     private String description;
 
     @OneToMany(mappedBy = "registration", cascade = CascadeType.ALL)

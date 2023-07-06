@@ -6,11 +6,13 @@ import com.app.event.dto.auth.request.AuthenticationRequest;
 import com.app.event.dto.auth.request.GoogleLoginRequest;
 import com.app.event.dto.auth.response.AuthenticationResponse;
 import com.app.event.entity.Account;
+import com.app.event.entity.Student;
 import com.app.event.enums.ResponseCode;
 import com.app.event.exception.ApiException;
 import com.app.event.mappings.AccountMapper;
 import com.app.event.repository.AccountRepository;
 import com.app.event.service.AuthenticationService;
+import com.app.event.service.StudentService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -26,6 +28,8 @@ public class AuthenticationController {
 
     private final AuthenticationService authenticationService;
     private final AccountMapper mapper;
+
+    private final StudentService studentService;
 
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> login(@Valid @RequestBody AuthenticationRequest request) {
@@ -58,6 +62,14 @@ public class AuthenticationController {
     public ResponseEntity<AccountResponse> getProfile() {
         Account acc = authenticationService.getCurrentAuthenticatedAccount()
                 .orElseThrow(() -> new ApiException(ResponseCode.UNAUTHORIZED));
-        return ResponseEntity.ok(mapper.toResponse(acc));
+
+        AccountResponse accResponse = mapper.toResponse(acc);
+
+        try {
+            Student currentStudent = studentService.getByAccId(acc.getId());
+            accResponse.setStudentId(currentStudent.getId());
+        } catch (Exception ig) {
+        }
+        return ResponseEntity.ok(accResponse);
     }
 }

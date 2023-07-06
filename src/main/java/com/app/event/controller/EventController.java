@@ -1,6 +1,5 @@
 package com.app.event.controller;
 
-import com.app.event.config.BaseConstants;
 import com.app.event.config.OpenApiConfig;
 import com.app.event.dto.common.response.ListResponse;
 import com.app.event.dto.common.response.PageResponse;
@@ -134,9 +133,9 @@ public class EventController {
         return ResponseEntity.ok(eventMapper.toDetailResponse(registration));
     }
 
-    @GetMapping("hot")
+    @GetMapping("up-coming")
     public ResponseEntity<ListResponse<Event, EventResponse>> getHotEvent() {
-        List<Event> hostEvents = eventService.getHostEvents();
+        List<Event> hostEvents = eventService.getUpComingEvents();
         ListResponse<Event, EventResponse> response = new ListResponse<>(hostEvents, eventMapper::toResponse);
         return ResponseEntity.ok(response);
     }

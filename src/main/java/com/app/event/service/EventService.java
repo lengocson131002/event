@@ -31,5 +31,5 @@ public interface EventService {
 
     EventActivity completeActivity(Student student, Long eventId, Long activityId);
 
-    List<Event> getHostEvents();
+    List<Event> getUpComingEvents();
 }

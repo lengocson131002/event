@@ -36,6 +36,7 @@ public class Event extends BaseEntity {
 
     private String vnName;
 
+    @Column(length = 2000)
     private String description;
 
     private OffsetDateTime startTime;

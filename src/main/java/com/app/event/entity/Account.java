@@ -42,6 +42,7 @@ public class Account extends BaseEntity implements UserDetails {
 
     private String email;
 
+    @Column(length = 1000)
     private String description;
 
     private String address;

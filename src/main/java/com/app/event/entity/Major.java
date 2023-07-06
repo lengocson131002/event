@@ -31,6 +31,7 @@ public class Major extends BaseEntity {
 
     private String name;
 
+    @Column(length = 1000)
     private String description;
 
     @ManyToMany(mappedBy = "majors")
