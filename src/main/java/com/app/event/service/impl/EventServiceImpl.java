@@ -18,10 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.OffsetDateTime;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -256,7 +253,10 @@ public class EventServiceImpl implements EventService {
     @Transactional
     public List<Event> getHostEvents() {
         // get current semester
-
+        List<Semester> semesters = semesterRepository.findCurrentSemester(OffsetDateTime.now());
+        if (semesters.isEmpty()) {
+            return new ArrayList<>();
+        }
         // get all event in current semester
         return null;
     }
