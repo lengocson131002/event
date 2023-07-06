@@ -252,6 +252,12 @@ public class EventServiceImpl implements EventService {
         return activity;
     }
 
+    @Override
+    @Transactional
+    public List<Event> getHostEvents() {
+        return null;
+    }
+
     private boolean semesterExpired(Semester semester) {
         OffsetDateTime now = OffsetDateTime.now();
         return !semester.getEndTime().isAfter(now);

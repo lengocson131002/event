@@ -134,4 +134,10 @@ public class EventController {
         return ResponseEntity.ok(eventMapper.toDetailResponse(registration));
     }
 
+    @GetMapping("hot")
+    public ResponseEntity<ListResponse<Event, EventResponse>> getHotEvent() {
+        List<Event> hostEvents = eventService.getHostEvents();
+        ListResponse<Event, EventResponse> response = new ListResponse<>(hostEvents, eventMapper::toResponse);
+        return ResponseEntity.ok(response);
+    }
 }
