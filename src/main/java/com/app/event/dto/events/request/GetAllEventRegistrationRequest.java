@@ -20,7 +20,6 @@ public class GetAllEventRegistrationRequest extends BaseFilterRequest<EventRegis
 
     private String query;
 
-    @JsonIgnore
     private Long eventId;
 
     @JsonIgnore

@@ -33,6 +33,8 @@ public class EventRegistrationDetailResponse {
 
     private EventResponse event;
 
+    private boolean canceled;
+
     private Set<ActivityResponse> activities;
 
 }

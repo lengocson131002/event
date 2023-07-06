@@ -29,4 +29,6 @@ public class EventRegistrationResponse {
 
     private EventResponse event;
 
+    private boolean canceled;
+
 }

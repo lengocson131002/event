@@ -120,7 +120,8 @@ public class EventMapperImpl implements EventMapper {
                 .setCreatedAt(registration.getCreatedAt())
                 .setUpdatedAt(registration.getUpdatedAt())
                 .setDescription(registration.getDescription())
-                .setEvent(this.toResponse(registration.getEvent()));
+                .setEvent(this.toResponse(registration.getEvent()))
+                .setCanceled(registration.getCanceledAt() != null);
     }
 
     @Override
@@ -143,7 +144,8 @@ public class EventMapperImpl implements EventMapper {
                 .setUpdatedAt(registration.getUpdatedAt())
                 .setDescription(registration.getDescription())
                 .setActivities(activities)
-                .setEvent(this.toResponse(registration.getEvent()));
+                .setEvent(this.toResponse(registration.getEvent()))
+                .setCanceled(registration.getCanceledAt() != null);
     }
 
     @Override
