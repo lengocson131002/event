@@ -51,6 +51,7 @@ public class SecurityConfig {
                 .requestMatchers(AUTH_WHITELIST)
                 .permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/*/events/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/*/semesters/**").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()

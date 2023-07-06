@@ -134,8 +134,19 @@ public class EventController {
     }
 
     @GetMapping("up-coming")
-    public ResponseEntity<ListResponse<Event, EventResponse>> getHotEvent() {
+    public ResponseEntity<ListResponse<Event, EventResponse>> getUpComingEvents() {
         List<Event> hostEvents = eventService.getUpComingEvents();
+        ListResponse<Event, EventResponse> response = new ListResponse<>(hostEvents, eventMapper::toResponse);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("hot")
+    public ResponseEntity<ListResponse<Event, EventResponse>> getHotEvent(@RequestParam Integer top) {
+        if (top == null) {
+            top = 5;
+        }
+
+        List<Event> hostEvents = eventService.getHotEvents(top);
         ListResponse<Event, EventResponse> response = new ListResponse<>(hostEvents, eventMapper::toResponse);
         return ResponseEntity.ok(response);
     }

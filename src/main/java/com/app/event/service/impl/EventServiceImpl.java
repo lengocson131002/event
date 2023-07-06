@@ -11,6 +11,7 @@ import com.app.event.enums.ResponseCode;
 import com.app.event.exception.ApiException;
 import com.app.event.mappings.EventMapper;
 import com.app.event.repository.*;
+import com.app.event.repository.projections.EventProjection;
 import com.app.event.service.AuthenticationService;
 import com.app.event.service.EventService;
 import lombok.RequiredArgsConstructor;
@@ -188,6 +189,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    @Transactional
     public EventRegistration getRegistration(Long eventId, Long regId) {
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new ApiException(ResponseCode.EVENT_ERROR_NOT_FOUND));
@@ -254,10 +256,14 @@ public class EventServiceImpl implements EventService {
     @Transactional
     public List<Event> getUpComingEvents() {
         // get current semester
-        GetAllEventManagersRequest request = new GetAllEventManagersRequest();
+        GetAllEventsRequest request = new GetAllEventsRequest();
+        request.setFrom(OffsetDateTime.now());
+        return eventRepository.findAll(request.getSpecification());
+    }
 
-
-        // get all event in current semester
+    @Override
+    public List<Event> getHotEvents(Integer top) {
+        List<EventProjection> events = eventRepository.getHostEvents(top);
         return null;
     }
 

@@ -8,6 +8,7 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import java.time.OffsetDateTime;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -30,5 +31,7 @@ public class EventRegistrationResponse {
     private EventResponse event;
 
     private boolean canceled;
+
+    private Set<ActivityResponse> activities;
 
 }

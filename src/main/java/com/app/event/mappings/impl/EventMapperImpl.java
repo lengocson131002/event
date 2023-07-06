@@ -113,6 +113,13 @@ public class EventMapperImpl implements EventMapper {
             return null;
         }
 
+        Set<ActivityResponse> activities = registration
+                .getActivities()
+                .stream()
+                .map(this::toResponse)
+                .collect(Collectors.toSet());
+
+
         return new EventRegistrationResponse()
                 .setId(registration.getId())
                 .setCanceledAt(registration.getCanceledAt())
@@ -121,7 +128,8 @@ public class EventMapperImpl implements EventMapper {
                 .setUpdatedAt(registration.getUpdatedAt())
                 .setDescription(registration.getDescription())
                 .setEvent(this.toResponse(registration.getEvent()))
-                .setCanceled(registration.getCanceledAt() != null);
+                .setCanceled(registration.getCanceledAt() != null)
+                .setActivities(activities);
     }
 
     @Override

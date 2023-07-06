@@ -26,7 +26,6 @@ import java.util.List;
 @RequestMapping("/api/v1/semesters")
 @RequiredArgsConstructor
 @SecurityRequirement(name = OpenApiConfig.BEARER_SCHEME)
-@PreAuthorize("hasRole('ADMIN')")
 public class SemesterController {
 
     private final SemesterService semesterService;
@@ -34,12 +33,14 @@ public class SemesterController {
     private final SemesterMapper semesterMapper;
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<SemesterResponse> createSemester(@Valid @RequestBody CreateSemesterRequest request) {
         Semester semester = semesterService.createSemester(request);
         return ResponseEntity.ok(semesterMapper.toResponse(semester));
     }
 
     @PutMapping("{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<SemesterResponse> updateSemester(@PathVariable Long id, @Valid @RequestBody UpdateSemesterRequest request) {
         request.setId(id);
         Semester semester = semesterService.updateSemester(request);
@@ -53,7 +54,6 @@ public class SemesterController {
     }
 
     @GetMapping()
-    @PreAuthorize("hasRole('EVENT_MANAGER') || hasRole ('ADMIN' )")
     public ResponseEntity<ListResponse<Semester, SemesterResponse>> getAllSemesters(@ParameterObject GetAllSemestersRequest request) {
         if (StringUtils.isEmpty(request.getSortBy())) {
             request.setSortBy(Semester.Fields.startTime);

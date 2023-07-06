@@ -32,4 +32,6 @@ public interface EventService {
     EventActivity completeActivity(Student student, Long eventId, Long activityId);
 
     List<Event> getUpComingEvents();
+
+    List<Event> getHotEvents(Integer top);
 }
