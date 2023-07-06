@@ -64,6 +64,10 @@ public enum ResponseCode {
 
     EVENT_REGISTRATION_STUDENT_NOT_ALLOWED(705, "Student is not allowed to register this event"),
 
+    EVENT_REGISTRATION_ACTIVITY_NOT_FOUND(706, "Activity not found"),
+
+    EVENT_REGISTRATION_ACTIVITY_COMPLETED(707, "Activity completed"),
+
 
 ;
 

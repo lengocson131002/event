@@ -30,7 +30,7 @@ public interface EventService {
 
     EventRegistration cancelRegistration(Student student, Long eventId);
 
-    EventActivity completeActivity(Student student, Long eventId, Long activityId);
+    EventActivity completeActivity(Long eventId, Long activityId);
 
     List<Event> getUpComingEvents();
 

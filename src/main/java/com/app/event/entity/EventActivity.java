@@ -41,4 +41,8 @@ public class EventActivity extends BaseEntity {
     public EventActivity(ActivityType type) {
         this.type = type;
     }
+
+    public  boolean isCompleted() {
+        return this.getCompletedAt() != null;
+    }
 }

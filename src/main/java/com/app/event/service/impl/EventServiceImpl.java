@@ -230,20 +230,17 @@ public class EventServiceImpl implements EventService {
 
     @Override
     @Transactional
-    public EventActivity completeActivity(Student student, Long eventId, Long activityId) {
-        Event event = eventRepository.findById(eventId)
+    public EventActivity completeActivity(Long eventId, Long activityId) {
+        eventRepository.findById(eventId)
                 .orElseThrow(() -> new ApiException(ResponseCode.EVENT_ERROR_NOT_FOUND));
 
-        EventRegistration registration = registrationRepository.findRegistration(event.getId(), student.getId())
-                .orElseThrow(() -> new ApiException(ResponseCode.EVENT_REGISTRATION_NOT_STUDENT));
+        EventActivity activity = activityRepository.findById(activityId)
+                .orElseThrow(() -> new ApiException(ResponseCode.EVENT_REGISTRATION_ACTIVITY_NOT_FOUND));
 
-        EventActivity activity = registration
-                .getActivities()
-                .stream()
-                .filter(ac -> Objects.equals(ac.getId(), activityId) && ac.getCompletedAt() == null)
-                .findAny()
-                .orElseThrow(() -> new ApiException(ResponseCode.FAILED));
-
+        EventRegistration registration = activity.getRegistration();
+        if (activity.isCompleted()) {
+            throw new ApiException(ResponseCode.EVENT_REGISTRATION_ACTIVITY_COMPLETED);
+        }
 
         activity.setCompletedAt(OffsetDateTime.now());
         if (ActivityType.CHECKIN.equals(activity.getType())) {

@@ -102,14 +102,9 @@ public class EventController {
 
     @PutMapping("{id}/activities/{acId}/complete")
     @SecurityRequirement(name = OpenApiConfig.BEARER_SCHEME)
-    @PreAuthorize("hasAnyRole('STUDENT')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'EVENT_MANAGER')")
     public ResponseEntity<ActivityResponse> completeActivity(@PathVariable Long id, @PathVariable Long acId) {
-        Account accStudent = authenticationService.getCurrentAuthenticatedAccount()
-                .orElseThrow(() -> new ApiException(ResponseCode.UNAUTHORIZED));
-
-        Student student = studentService.getByAccId(accStudent.getId());
-
-        EventActivity activity = eventService.completeActivity(student, id, acId);
+        EventActivity activity = eventService.completeActivity(id, acId);
         return ResponseEntity.ok(eventMapper.toResponse(activity));
     }
 
