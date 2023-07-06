@@ -255,6 +255,9 @@ public class EventServiceImpl implements EventService {
     @Override
     @Transactional
     public List<Event> getHostEvents() {
+        // get current semester
+
+        // get all event in current semester
         return null;
     }
 
