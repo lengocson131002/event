@@ -5,6 +5,7 @@ import com.app.event.dto.events.request.CreateEventRequest;
 import com.app.event.dto.events.request.GetAllEventRegistrationRequest;
 import com.app.event.dto.events.request.GetAllEventsRequest;
 import com.app.event.dto.events.request.UpdateEventRequest;
+import com.app.event.dto.events.response.EventResponse;
 import com.app.event.entity.*;
 import com.app.event.enums.ActivityType;
 import com.app.event.enums.ResponseCode;
@@ -21,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.OffsetDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -262,9 +264,15 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public List<Event> getHotEvents(Integer top) {
-        List<EventProjection> events = eventRepository.getHostEvents(top);
-        return null;
+    public List<EventResponse> getHotEvents() {
+        List<EventProjection> events = eventRepository.getHostEvents();
+        return events.stream()
+                .map(e -> {
+                    EventResponse response = eventMapper.toResponse(e.getEvent());
+                    response.setRegisterCount(e.getRegisterCount());
+                    return response;
+                }).filter(e -> e.getRegisterCount() > 0)
+                .collect(Collectors.toList());
     }
 
     private boolean semesterExpired(Semester semester) {

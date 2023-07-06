@@ -141,13 +141,7 @@ public class EventController {
     }
 
     @GetMapping("hot")
-    public ResponseEntity<ListResponse<Event, EventResponse>> getHotEvent(@RequestParam Integer top) {
-        if (top == null) {
-            top = 5;
-        }
-
-        List<Event> hostEvents = eventService.getHotEvents(top);
-        ListResponse<Event, EventResponse> response = new ListResponse<>(hostEvents, eventMapper::toResponse);
-        return ResponseEntity.ok(response);
+    public ResponseEntity<List<EventResponse>> getHotEvent() {
+        return ResponseEntity.ok(eventService.getHotEvents());
     }
 }

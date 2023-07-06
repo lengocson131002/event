@@ -23,6 +23,6 @@ public interface EventRepository extends JpaRepository<Event, Long>, JpaSpecific
             "LEFT JOIN e.registrations r " +
             "GROUP BY e " +
             "ORDER BY COUNt(r) DESC " +
-            "LIMIT 5 ")
-    List<EventProjection> getHostEvents(Integer top);
+            "LIMIT 5")
+    List<EventProjection> getHostEvents();
 }

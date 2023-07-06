@@ -78,7 +78,12 @@ public class EventMapperImpl implements EventMapper {
                         : null)
                 .setUpdatedBy(event.getUpdatedBy() != null
                         ? event.getUpdatedBy().getUsername()
-                        : null);
+                        : null)
+                .setSubjects(event
+                    .getSubjects()
+                    .stream()
+                    .map(subjectMapper::toResponse)
+                    .collect(Collectors.toSet()));
     }
 
     @Override
