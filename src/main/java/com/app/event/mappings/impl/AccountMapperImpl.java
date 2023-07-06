@@ -41,7 +41,8 @@ public class AccountMapperImpl implements AccountMapper {
                 .setPhone(account.getPhone())
                 .setRole(account.getRole())
                 .setUpdatedAt(account.getUpdatedAt())
-                .setCreatedAt(account.getCreatedAt());
+                .setCreatedAt(account.getCreatedAt())
+                .setAvatar(account.getAvatar());
     }
 
     @Override
@@ -58,7 +59,8 @@ public class AccountMapperImpl implements AccountMapper {
                 .setPhone(account.getPhone())
                 .setRole(account.getRole())
                 .setUpdatedAt(account.getUpdatedAt())
-                .setCreatedAt(account.getCreatedAt());
+                .setCreatedAt(account.getCreatedAt())
+                .setAvatar(account.getAvatar());
     }
 
 

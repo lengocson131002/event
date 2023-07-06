@@ -17,6 +17,8 @@ import java.time.OffsetDateTime;
 public class AccountResponse {
     private Long id;
 
+    private String avatar;
+
     private Long studentId;
 
     private String username;
