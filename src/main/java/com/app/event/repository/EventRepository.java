@@ -21,6 +21,7 @@ public interface EventRepository extends JpaRepository<Event, Long>, JpaSpecific
 
     @Query(value = "SELECT e as event, COUNt(r) as registerCount FROM Event e " +
             "LEFT JOIN e.registrations r " +
+            "WHERE r.canceledAt IS NULL " +
             "GROUP BY e " +
             "ORDER BY COUNt(r) DESC " +
             "LIMIT 5")

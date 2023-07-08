@@ -102,7 +102,7 @@ public class EventController {
 
     @PutMapping("{id}/activities/{acId}/complete")
     @SecurityRequirement(name = OpenApiConfig.BEARER_SCHEME)
-    @PreAuthorize("hasAnyRole('ADMIN', 'EVENT_MANAGER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'EVENT_MANAGER', 'STUDENT')")
     public ResponseEntity<ActivityResponse> completeActivity(@PathVariable Long id, @PathVariable Long acId) {
         EventActivity activity = eventService.completeActivity(id, acId);
         return ResponseEntity.ok(eventMapper.toResponse(activity));

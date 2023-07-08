@@ -16,7 +16,8 @@ public interface SemesterRepository extends JpaRepository<Semester, Long>, JpaSp
     @Query("SELECT s FROM Semester s " +
             "WHERE (s.startTime <= ?1 and s.endTime >= ?1) " +
             "   or (s.startTime <= ?2 and s.endTime >= ?2) " +
-            "   or (s.startTime <= ?1 and s.endTime >= ?2)")
+            "   or (s.startTime <= ?1 and s.endTime >= ?2) " +
+            "   or (s.startTime >= ?1 and s.endTime <= ?2)")
     List<Semester> findCurrentSemester(OffsetDateTime startTime, OffsetDateTime endTime);
 
     Optional<Semester> findFirstByEnName(String enName);
