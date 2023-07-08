@@ -1,0 +1,57 @@
+variables:
+  APP_NAME: "event-be"
+  PORT: "8080"
+  ENV_FILE: ${env}
+
+cache:
+  paths:
+    - .gradle/wrapper
+    - .gradle/caches
+
+services:
+  - docker:19.03.7-dind
+stages:
+  - build jar
+  - build and push docker image
+  - deploy
+
+build:
+  image: openjdk:17-alpine
+  stage: build jar
+  script:
+    - chmod +x ./gradlew
+    - ./gradlew build -x test
+  artifacts:
+    paths:
+      - build/libs/*.jar
+  tags:
+    - docker
+
+docker build:
+  image: docker:stable
+  stage: build and push docker image
+  before_script:
+    - docker --version
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
+  script:
+    - docker build -t "$CI_REGISTRY_IMAGE" .
+    - docker push "$CI_REGISTRY_IMAGE"
+  tags:
+    - docker
+  only:
+    - develop
+
+deploy:
+  stage: deploy
+  script:
+    - cp $ENV_FILE .env
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
+    - docker stop $APP_NAME || true;
+    - docker system prune -a -f;
+    - docker pull $CI_REGISTRY_IMAGE
+    - docker container run -d --restart unless-stopped --env-file .env --name $APP_NAME -p $PORT:8080 $CI_REGISTRY_IMAGE
+    - docker logout
+  tags:
+    - shell
+  only:
+    - develop
