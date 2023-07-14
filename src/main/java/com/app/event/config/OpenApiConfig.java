@@ -12,6 +12,9 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
+/**
+ * This class is used for generate swagger document
+ */
 public class OpenApiConfig {
     public static final String BEARER_SCHEME = "Bearer";
     private static final String API_VERSION = "v1";

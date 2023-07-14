@@ -40,6 +40,7 @@ public class AccountMapperImpl implements AccountMapper {
                 .setEmail(account.getEmail())
                 .setPhone(account.getPhone())
                 .setRole(account.getRole())
+                .setDescription(account.getDescription())
                 .setUpdatedAt(account.getUpdatedAt())
                 .setCreatedAt(account.getCreatedAt())
                 .setAvatar(account.getAvatar());
@@ -60,6 +61,7 @@ public class AccountMapperImpl implements AccountMapper {
                 .setRole(account.getRole())
                 .setUpdatedAt(account.getUpdatedAt())
                 .setCreatedAt(account.getCreatedAt())
+                .setDescription(account.getDescription())
                 .setAvatar(account.getAvatar());
     }
 

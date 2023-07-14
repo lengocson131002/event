@@ -1,5 +1,6 @@
 package com.app.event.dto.account.response;
 
+import com.app.event.dto.major.response.MajorResponse;
 import com.app.event.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,6 +20,8 @@ public class AccountDetailResponse {
 
     private String avatar;
 
+    private Long studentId;
+
     private String username;
 
     private String phone;
@@ -34,4 +37,6 @@ public class AccountDetailResponse {
     private OffsetDateTime createdAt;
 
     private OffsetDateTime updatedAt;
+
+    private MajorResponse major;
 }

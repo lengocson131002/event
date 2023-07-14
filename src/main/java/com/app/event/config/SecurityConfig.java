@@ -21,6 +21,9 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableWebSecurity
 @RequiredArgsConstructor
 @EnableMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
+/**
+ * Class này dùng để authorize user, cho phép người dùng nào được truy cập endpoints nào
+ */
 public class SecurityConfig {
     private static final String[] AUTH_WHITELIST = {
             "/api/v1/auth/login/**",
