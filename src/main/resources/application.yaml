@@ -1,6 +1,6 @@
 server:
   port: ${SERVER_PORT:8080}
-  url: ${SERVER_URL:http://52.74.214.224}
+  url: ${SERVER_URL:http://localhost:8080}
 
 spring:
   jpa:

@@ -18,19 +18,16 @@ import java.util.List;
 public class OpenApiConfig {
     public static final String BEARER_SCHEME = "Bearer";
     private static final String API_VERSION = "v1";
-    private static final String API_TITLE = "Shop management API";
-    private static final String API_DESCRIPTION = "Shop Management API";
+    private static final String API_TITLE = "FPT SE Event management API";
+    private static final String API_DESCRIPTION = "FPT SE Event Management API";
     @Value("${server.url:http://localhost:8080}")
     private String server;
-    @Value("${server.port}")
-    private Integer port;
 
     @Bean
     public OpenAPI customOpenApi() {
         return new OpenAPI()
                 .servers(List.of(
-                        new Server().url("http://localhost:" + port),
-                        new Server().url(server + ":" + port)
+                        new Server().url(server)
                 ))
                 .info(
                         new Info()
