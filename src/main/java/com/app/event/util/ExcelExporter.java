@@ -2,8 +2,12 @@ package com.app.event.util;
 
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.hssf.usermodel.HSSFFont;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFFont;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Component;
 
 import java.io.ByteArrayInputStream;
@@ -60,9 +64,15 @@ public class ExcelExporter {
 
     private void createHeaderRow(Sheet sheet, String[] columnNames) {
         Row headerRow = sheet.createRow(0);
+        CellStyle headerCellStyle = sheet.getWorkbook().createCellStyle();
+        HSSFFont headerFont = (HSSFFont)sheet.getWorkbook().createFont();
+        headerFont.setBold(true);
+        headerCellStyle.setFont(headerFont);
+
         for (int i = 0; i < columnNames.length; i++) {
             Cell cell = headerRow.createCell(i);
             cell.setCellValue(columnNames[i]);
+            cell.setCellStyle(headerCellStyle);
         }
     }
 
