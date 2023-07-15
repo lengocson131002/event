@@ -16,21 +16,32 @@ import com.app.event.service.AuthenticationService;
 import com.app.event.service.EventService;
 import com.app.event.service.StudentService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.RequestContextUtils;
 
 import java.util.List;
+import java.util.TimeZone;
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/events")
+@Slf4j
 public class EventController {
 
     private final EventService eventService;
@@ -119,6 +130,22 @@ public class EventController {
 
         EventRegistration registration = eventService.cancelRegistration(student, id);
         return ResponseEntity.ok(eventMapper.toResponse(registration));
+    }
+
+    @GetMapping("{id}/registrations/excel")
+    @SecurityRequirement(name = OpenApiConfig.BEARER_SCHEME)
+    @PreAuthorize("hasAnyRole('ADMIN', 'EVENT_MANAGER')")
+    public ResponseEntity<Resource> downloadExcel(TimeZone timeZone, @PathVariable Long id, HttpServletRequest request) {
+        log.info("Timezone" + timeZone.toString());
+        Event event = eventService.getEvent(id);
+        InputStreamResource resource = eventService.exportToExcel(event, timeZone);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Disposition", String.format("attachment; filename=%s.xlsx", UUID.randomUUID().toString()));
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .body(resource);
     }
 
     @GetMapping("{id}/registrations/{regId}")

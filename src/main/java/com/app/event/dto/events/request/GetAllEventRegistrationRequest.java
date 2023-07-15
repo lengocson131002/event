@@ -25,6 +25,8 @@ public class GetAllEventRegistrationRequest extends BaseFilterRequest<EventRegis
     @JsonIgnore
     private Long studentId;
 
+    private Boolean isCanceled;
+
     @Override
     public Specification<EventRegistration> getSpecification() {
         return (root, cq, cb) -> {
@@ -74,6 +76,14 @@ public class GetAllEventRegistrationRequest extends BaseFilterRequest<EventRegis
 
             if (studentId != null) {
                 predicates.add(cb.equal(root.join(EventRegistration.Fields.student).get(Student.Fields.id), studentId));
+            }
+
+            if (isCanceled != null) {
+                if (isCanceled) {
+                    predicates.add(cb.isNotNull(root.get(EventRegistration.Fields.canceledAt)));
+                } else {
+                    predicates.add(cb.isNull(root.get(EventRegistration.Fields.canceledAt)));
+                }
             }
 
             return cb.and(predicates.toArray(new Predicate[0]));

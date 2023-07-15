@@ -8,6 +8,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldNameConstants;
+import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -35,10 +38,14 @@ public class Student extends BaseEntity  {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "account_id")
+    @Fetch(FetchMode.SELECT)
+    @BatchSize(size = 50)
     private Account account;
 
     @ManyToOne
     @JoinColumn(name = "major_id")
+    @Fetch(FetchMode.SELECT)
+    @BatchSize(size = 50)
     private Major major;
 
     @ManyToMany

@@ -3,11 +3,13 @@ package com.app.event.mappings.impl;
 import com.app.event.dto.events.request.CreateEventRequest;
 import com.app.event.dto.events.response.*;
 import com.app.event.entity.*;
+import com.app.event.enums.ActivityType;
 import com.app.event.enums.ResponseCode;
 import com.app.event.exception.ApiException;
 import com.app.event.mappings.*;
 import com.app.event.repository.SemesterRepository;
 import com.app.event.repository.SubjectRepository;
+import com.app.event.util.DateTimeUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -174,4 +176,5 @@ public class EventMapperImpl implements EventMapper {
                 .setUpdatedAt(activity.getUpdatedAt())
                 .setCompletedAt(activity.getCompletedAt());
     }
+
 }

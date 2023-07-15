@@ -1,10 +1,11 @@
 package com.app.event.service.impl;
 
-import com.app.event.dto.account.request.GetAllEventManagersRequest;
+import com.app.event.config.BaseConstants;
 import com.app.event.dto.events.request.CreateEventRequest;
 import com.app.event.dto.events.request.GetAllEventRegistrationRequest;
 import com.app.event.dto.events.request.GetAllEventsRequest;
 import com.app.event.dto.events.request.UpdateEventRequest;
+import com.app.event.dto.events.response.EventRegistrationExcel;
 import com.app.event.dto.events.response.EventResponse;
 import com.app.event.entity.*;
 import com.app.event.enums.ActivityType;
@@ -15,11 +16,18 @@ import com.app.event.repository.*;
 import com.app.event.repository.projections.EventProjection;
 import com.app.event.service.AuthenticationService;
 import com.app.event.service.EventService;
+import com.app.event.util.DateTimeUtils;
+import com.app.event.util.ExcelExporter;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.servlet.support.RequestContextUtils;
 
+import java.io.ByteArrayInputStream;
 import java.time.OffsetDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -41,6 +49,8 @@ public class EventServiceImpl implements EventService {
     private final EventRegistrationRepository registrationRepository;
 
     private final EventActivityRepository activityRepository;
+
+    private final ExcelExporter excelExporter;
 
     @Override
     @Transactional
@@ -270,6 +280,65 @@ public class EventServiceImpl implements EventService {
                     return response;
                 }).filter(e -> e.getRegisterCount() > 0)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional
+    public InputStreamResource exportToExcel(Event event, TimeZone timeZone) {
+        List<EventRegistration> registrations = getAllRegistrations(
+                new GetAllEventRegistrationRequest()
+                        .setEventId(event.getId())
+                        .setIsCanceled(false)
+        );
+
+        List<EventRegistrationExcel> eventRegistrationExcels = new ArrayList<>();
+        for (int i = 0; i < registrations.size(); i++) {
+            EventRegistration registration = registrations.get(i);
+            Student student = registration.getStudent();
+            Account account = student.getAccount();
+            Set<EventActivity> activities = registration.getActivities();
+
+            EventActivity checkinAcc = activities
+                    .stream()
+                    .filter(acc -> acc.getType().equals(ActivityType.CHECKIN))
+                    .findFirst()
+                    .orElse(null);
+
+            EventActivity checkoutAcc = activities
+                    .stream()
+                    .filter(acc -> acc.getType().equals(ActivityType.CHECKOUT))
+                    .findFirst()
+                    .orElse(null);
+
+            EventRegistrationExcel eventRegistrationExcel = new EventRegistrationExcel()
+                    .setNo(i + 1)
+                    .setName(account.getName())
+                    .setCode(account.getCode())
+                    .setEmail(account.getEmail())
+                    .setPhone(account.getPhone())
+                    .setMajor(student.getMajor().getCode())
+                    .setCheckinTime(checkinAcc != null
+                            ? DateTimeUtils.toString(checkinAcc.getCompletedAt(), timeZone, BaseConstants.DATE_TIME_FORMAT)
+                            : null)
+                    .setCheckoutTime(checkoutAcc != null
+                            ? DateTimeUtils.toString(checkoutAcc.getCompletedAt(), timeZone, BaseConstants.DATE_TIME_FORMAT)
+                            : null);
+
+            eventRegistrationExcels.add(eventRegistrationExcel);
+        }
+
+       Map<String, String> columnHeaders = new LinkedHashMap<>();
+        columnHeaders.put("no", "STT");
+        columnHeaders.put("name", "Student Name");
+        columnHeaders.put("code", "Student Code");
+        columnHeaders.put("email", "Email");
+        columnHeaders.put("phone", "Phone");
+        columnHeaders.put("major", "Major");
+        columnHeaders.put("checkinTime", "Checkin Time");
+        columnHeaders.put("checkoutTime", "Checkout Time");
+
+       ByteArrayInputStream inputStream = excelExporter.exportToExcel(eventRegistrationExcels, columnHeaders);
+       return new InputStreamResource(inputStream);
     }
 
     private boolean semesterExpired(Semester semester) {

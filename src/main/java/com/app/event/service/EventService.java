@@ -9,9 +9,13 @@ import com.app.event.entity.Event;
 import com.app.event.entity.EventActivity;
 import com.app.event.entity.EventRegistration;
 import com.app.event.entity.Student;
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
+import java.util.TimeZone;
 
 public interface EventService {
     Event createEvent(CreateEventRequest request);
@@ -35,4 +39,6 @@ public interface EventService {
     List<Event> getUpComingEvents();
 
     List<EventResponse> getHotEvents();
+
+    InputStreamResource exportToExcel(Event event, TimeZone timeZone);
 }

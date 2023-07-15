@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldNameConstants;
+import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -32,6 +35,8 @@ public class EventRegistration extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "student_id")
+    @Fetch(FetchMode.SELECT)
+    @BatchSize(size = 50)
     private Student student;
 
     @ManyToOne
@@ -44,6 +49,8 @@ public class EventRegistration extends BaseEntity {
     private String description;
 
     @OneToMany(mappedBy = "registration", cascade = CascadeType.ALL)
+    @Fetch(FetchMode.SELECT)
+    @BatchSize(size = 50)
     private Set<EventActivity> activities;
 
     public EventRegistration(Student student, Event event) {
