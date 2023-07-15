@@ -329,13 +329,13 @@ public class EventServiceImpl implements EventService {
 
        Map<String, String> columnHeaders = new LinkedHashMap<>();
         columnHeaders.put("no", "STT");
-        columnHeaders.put("name", "Student Name");
-        columnHeaders.put("code", "Student Code");
-        columnHeaders.put("email", "Email");
-        columnHeaders.put("phone", "Phone");
-        columnHeaders.put("major", "Major");
-        columnHeaders.put("checkinTime", "Checkin Time");
-        columnHeaders.put("checkoutTime", "Checkout Time");
+        columnHeaders.put("name", "STUDENT NAME");
+        columnHeaders.put("code", "STUDENT CODE");
+        columnHeaders.put("email", "EMAIL");
+        columnHeaders.put("phone", "PHONE");
+        columnHeaders.put("major", "MAJOR");
+        columnHeaders.put("checkinTime", "CHECKIN TIME");
+        columnHeaders.put("checkoutTime", "CHECKOUT TIME");
 
        ByteArrayInputStream inputStream = excelExporter.exportToExcel(eventRegistrationExcels, columnHeaders);
        return new InputStreamResource(inputStream);
