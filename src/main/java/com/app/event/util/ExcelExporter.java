@@ -60,11 +60,9 @@ public class ExcelExporter {
 
     private void createHeaderRow(Sheet sheet, String[] columnNames) {
         Row headerRow = sheet.createRow(0);
-        CellStyle headerCellStyle = sheet.getWorkbook().createCellStyle();
         for (int i = 0; i < columnNames.length; i++) {
             Cell cell = headerRow.createCell(i);
             cell.setCellValue(columnNames[i]);
-            cell.setCellStyle(headerCellStyle);
         }
     }
 
