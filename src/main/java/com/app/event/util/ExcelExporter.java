@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Component;
 
@@ -62,7 +63,7 @@ public class ExcelExporter {
     private void createHeaderRow(Sheet sheet, String[] columnNames) {
         Row headerRow = sheet.createRow(0);
         CellStyle headerCellStyle = sheet.getWorkbook().createCellStyle();
-        final HSSFFont headerFont = (HSSFFont)sheet.getWorkbook().createFont();
+        XSSFFont headerFont = (XSSFFont) sheet.getWorkbook().createFont();
         headerFont.setBold(true);
         headerCellStyle.setFont(headerFont);
 
