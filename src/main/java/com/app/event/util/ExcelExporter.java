@@ -65,9 +65,9 @@ public class ExcelExporter {
     private void createHeaderRow(Sheet sheet, String[] columnNames) {
         Row headerRow = sheet.createRow(0);
         CellStyle headerCellStyle = sheet.getWorkbook().createCellStyle();
-        HSSFFont headerFont = (HSSFFont)sheet.getWorkbook().createFont();
-        headerFont.setBold(true);
-        headerCellStyle.setFont(headerFont);
+//        HSSFFont headerFont = (HSSFFont)sheet.getWorkbook().createFont();
+//        headerFont.setBold(true);
+//        headerCellStyle.setFont(headerFont);
 
         for (int i = 0; i < columnNames.length; i++) {
             Cell cell = headerRow.createCell(i);
